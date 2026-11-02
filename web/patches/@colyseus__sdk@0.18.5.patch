@@ -1,0 +1,56 @@
+diff --git a/build/transport/WebSocketTransport.cjs b/build/transport/WebSocketTransport.cjs
+index 7c94aad3cb16177d569a22d747463d7bb9850bac..c0930d331bf07caeb0b9d8f20716c700205d5425 100644
+--- a/build/transport/WebSocketTransport.cjs
++++ b/build/transport/WebSocketTransport.cjs
+@@ -45,13 +45,17 @@ class WebSocketTransport {
+      * @param headers custom headers to send with the connection (only supported in Node.js. Web Browsers do not allow setting custom headers)
+      */
+     connect(url, headers) {
+-        try {
+-            // Node or Bun environments (supports custom headers)
+-            this.ws = new WebSocket(url, { headers, protocols: this.protocols });
+-        }
+-        catch (e) {
+-            // browser environment (custom headers not supported)
++        if (typeof window !== 'undefined') {
++            // Browsers accept protocols only. Safari logs an error even when the Node-style call is caught.
+             this.ws = new WebSocket(url, this.protocols);
++        } else {
++            try {
++                // Node or Bun environments (supports custom headers)
++                this.ws = new WebSocket(url, { headers, protocols: this.protocols });
++            }
++            catch (e) {
++                this.ws = new WebSocket(url, this.protocols);
++            }
+         }
+         this.ws.binaryType = 'arraybuffer';
+         this.ws.onopen = (event) => { var _a, _b; return (_b = (_a = this.events).onopen) === null || _b === void 0 ? void 0 : _b.call(_a, event); };
+diff --git a/build/transport/WebSocketTransport.mjs b/build/transport/WebSocketTransport.mjs
+index fbe564a318f401c02d5d9f690484fb46a65053ba..b2ff9bfe053ee5311111812eeafaf18d434ee4ba 100644
+--- a/build/transport/WebSocketTransport.mjs
++++ b/build/transport/WebSocketTransport.mjs
+@@ -46,13 +46,17 @@ class WebSocketTransport {
+      * @param headers custom headers to send with the connection (only supported in Node.js. Web Browsers do not allow setting custom headers)
+      */
+     connect(url, headers) {
+-        try {
+-            // Node or Bun environments (supports custom headers)
+-            this.ws = new WebSocket(url, { headers, protocols: this.protocols });
+-        }
+-        catch (e) {
+-            // browser environment (custom headers not supported)
++        if (typeof window !== 'undefined') {
++            // Browsers accept protocols only. Safari logs an error even when the Node-style call is caught.
+             this.ws = new WebSocket(url, this.protocols);
++        } else {
++            try {
++                // Node or Bun environments (supports custom headers)
++                this.ws = new WebSocket(url, { headers, protocols: this.protocols });
++            }
++            catch (e) {
++                this.ws = new WebSocket(url, this.protocols);
++            }
+         }
+         this.ws.binaryType = 'arraybuffer';
+         this.ws.onopen = (event) => this.events.onopen?.(event);

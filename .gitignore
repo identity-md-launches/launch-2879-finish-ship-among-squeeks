@@ -1,0 +1,11 @@
+# Path budget: this file <= 512 bytes. Export is intentionally tracked.
+!web/artifacts/
+!web/artifacts/**
+node_modules/
+.pnpm-store/
+.npm/
+.cache/
+.vite/
+*.tsbuildinfo
+.DS_Store
+test/scratch/

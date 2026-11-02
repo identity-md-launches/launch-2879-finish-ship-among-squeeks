@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: false
+patchedDependencies:
+  '@colyseus/sdk@0.18.5': patches/@colyseus__sdk@0.18.5.patch
